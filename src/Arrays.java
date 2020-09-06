@@ -1,21 +1,23 @@
-public class Arrays {
-
+public class Arrays implements Runnable {
 
     static final int size = 10000000;
     static final int h = size / 2;
     float[] arr = new float[size];
 
-    public static void main(String[] args) {
-
+    public Arrays() {
     }
 
-    public void arrayOperation (){
-        for(float x: arr) {
-            x = 1;
-        }
+    public Arrays(float[] arr) {
+        this.arr = arr;
+    }
+
+
+    public void arrayOperation() {
+        for (float x : arr) x = 1;
         long a = System.currentTimeMillis();
+
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = (float)(arr[i] * Math.sin(02.f + i / 5) * Math.cos(02f + i / 5) * Math.cos(0.4f + i / 2));
+            arr[i] = (float) (arr[i] * Math.sin(02.f + i / 5) * Math.cos(02f + i / 5) * Math.cos(0.4f + i / 2));
         }
         System.out.println((System.currentTimeMillis() - a) + " миллисекунд, время для просчета одного массива");
     }
@@ -28,52 +30,27 @@ public class Arrays {
         System.arraycopy(arr, 0, a1, 0, h);
         System.arraycopy(arr, 0, a2, 0, h);
 
-        Thread arrayF = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for(float x: arr) {
-                    x = 1;
-                }
-                long a = System.currentTimeMillis();
-                for (int i = 0; i < a1.length; i++) {
-                    a1[i] = (float)(a1[i] * Math.sin(02.f + i / 5) * Math.cos(02f + i / 5) * Math.cos(0.4f + i / 2));
-                }
-            }
-        });
-        arrayF.start();
+        Arrays ar01 = new Arrays(a1);
+        Thread th01 = new Thread(ar01);
+        th01.start();
+        Arrays ar02 = new Arrays(a2);
+        Thread th02 = new Thread(ar02);
+        th02.start();
 
-        Thread arrayS = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for(float x: arr) {
-                    x = 1;
-                }
-                long a = System.currentTimeMillis();
-                for (int i = 0; i < a2.length; i++) {
-                    a2[i] = (float)(a2[i] * Math.sin(02.f + i / 5) * Math.cos(02f + i / 5) * Math.cos(0.4f + i / 2));
-                }
-            }
-        });
-        arrayS.start();
+        System.arraycopy(a1, 0, arr, 0, h);
+        System.arraycopy(a2, 0, arr, h, h);
+        System.out.println((System.currentTimeMillis() - a) + " миллисекунд, время для просчета по двум массивам");
 
 
-
-        System.arraycopy(a1,0, arr, 0, h);
-        System.arraycopy(a2,0, arr, h, h);
-        System.out.println((System.currentTimeMillis() - a) + " миллисекунд, время для просчета по двум массивам" );
     }
 
+    @Override
+    public void run() {
+        for (float x : arr) x = 1;
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = (float) (arr[i] * Math.sin(02.f + i / 5) * Math.cos(02f + i / 5) * Math.cos(0.4f + i / 2));
+        }
 
-//    @Override
-//    public void run() {
-//        for(float x: arr) {
-//            x = 1;
-//        }
-//        long a = System.currentTimeMillis();
-//        for (int i = 0; i < arr.length; i++) {
-//            arr[i] = (float)(arr[i] * Math.sin(02.f + i / 5) * Math.cos(02f + i / 5) * Math.cos(0.4f + i / 2));
-//        }
-//        System.out.println((System.currentTimeMillis() - a) + " время по одному массиву");
-//    }
+    }
 }
 
