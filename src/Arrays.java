@@ -22,7 +22,7 @@ public class Arrays implements Runnable {
         System.out.println((System.currentTimeMillis() - a) + " миллисекунд, время для просчета одного массива");
     }
 
-    public void createSeparateArray() {
+    public void createSeparateArray() throws InterruptedException {
         float[] a1 = new float[h];
         float[] a2 = new float[h];
 
@@ -36,6 +36,7 @@ public class Arrays implements Runnable {
         Arrays ar02 = new Arrays(a2);
         Thread th02 = new Thread(ar02);
         th02.start();
+        th02.join();
 
         System.arraycopy(a1, 0, arr, 0, h);
         System.arraycopy(a2, 0, arr, h, h);
