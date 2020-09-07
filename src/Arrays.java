@@ -29,17 +29,19 @@ public class Arrays implements Runnable {
         long a = System.currentTimeMillis();
         System.arraycopy(arr, 0, a1, 0, h);
         System.arraycopy(arr, 0, a2, 0, h);
+        synchronized (arr) {
 
-        Arrays ar01 = new Arrays(a1);
-        Thread th01 = new Thread(ar01);
-        th01.start();
-        Arrays ar02 = new Arrays(a2);
-        Thread th02 = new Thread(ar02);
-        th02.start();
-        th02.join();
+            Arrays ar01 = new Arrays(a1);
+            Thread th01 = new Thread(ar01);
+            th01.start();
+            Arrays ar02 = new Arrays(a2);
+            Thread th02 = new Thread(ar02);
+            th02.start();
+            th02.join();
 
-        System.arraycopy(a1, 0, arr, 0, h);
-        System.arraycopy(a2, 0, arr, h, h);
+            System.arraycopy(a1, 0, arr, 0, h);
+            System.arraycopy(a2, 0, arr, h, h);
+        }
         System.out.println((System.currentTimeMillis() - a) + " миллисекунд, время для просчета по двум массивам");
 
 
