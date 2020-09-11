@@ -6,11 +6,11 @@ public class Server {
     private DataInputStream in;
     private DataOutputStream out;
 
-    public static boolean isCloseConnection() {
+    public boolean isCloseConnection() {
         return closeConnection;
     }
 
-    private static boolean closeConnection = true;
+    private boolean closeConnection = true;
 
     public Server () {
         try {
