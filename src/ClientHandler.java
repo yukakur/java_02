@@ -9,6 +9,15 @@ public class ClientHandler {
     private DataInputStream in;
     private DataOutputStream out;
     private Server server;
+    private boolean isAuthenticated = false;
+
+    public boolean isAuthenticated() {
+        return isAuthenticated;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
 
     public String getName() {
         return name;
@@ -44,6 +53,8 @@ public class ClientHandler {
         }).start();
     }
 
+
+
     public void authentication() throws IOException{
         while(true) {
             String loginInfo = in.readUTF();
@@ -60,6 +71,7 @@ public class ClientHandler {
                         name = maybeClient.getName();
                         server.broadcast(String.format("%s is in the chat", name));
                         System.out.println("Client auth completed");
+                        isAuthenticated = true;
                         server.subscribe(this);
                         return;
                     } else {

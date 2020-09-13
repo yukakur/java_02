@@ -7,6 +7,8 @@ public class Server {
 
     private Set<ClientHandler> clientHandlers;
     private AuthenticationService authenticationService;
+    private long startConnectionTime;
+
 
     public Server() {
         this.clientHandlers = new HashSet<>();
@@ -30,8 +32,34 @@ public class Server {
         while(true) {
             System.out.println("Looking for a client...");
             Socket clientSocket = serverSocket.accept();
+
             System.out.println("Client connected: " + clientSocket);
             new ClientHandler( clientSocket, this);
+            timeAuthCheck(clientSocket);
+        }
+    }
+    public void timeAuthCheck(Socket socket) {
+        boolean isAuth = false;
+        try {
+            Thread.sleep(1000);
+            for(ClientHandler ch: clientHandlers) {
+                if(ch.getSocket().equals(socket)) {
+                    isAuth = true;
+                    break;
+                }
+                break;
+            }
+            if(!isAuth) {
+                try {
+
+                    socket.close();
+                    
+                } catch (IOException e) {
+                    System.out.println("Client has been disconnected due to exceeded time for authorization");
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
