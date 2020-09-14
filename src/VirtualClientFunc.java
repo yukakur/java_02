@@ -77,7 +77,7 @@ public class VirtualClientFunc {
         isConnected = false;
         try {
             socket = new Socket("127.0.0.1", 8888);
-            System.out.println(String.format("%s is online, starting authorization... " , name + " " + socket));
+            System.out.println(String.format("%s is connected, starting authorization... " , name + " " + socket));
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
             out.writeUTF(String.format("-auth %s %s", login, password));

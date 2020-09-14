@@ -35,6 +35,25 @@ public class ClientHandler {
         this.server = server;
     }
 
+    public void setIn() {
+        try {
+            this.in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void setOut() {
+        try {
+            this.out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setOut(DataOutputStream out) {
+        this.out = out;
+    }
+
     public void start() {
         new Thread(new Runnable() {
             @Override
@@ -92,6 +111,18 @@ public class ClientHandler {
     public void readMessage() throws IOException {
         while (true) {
             String message = in.readUTF();
+            if(message.startsWith("/w")) {
+                String[] strMessage = message.trim().split(" ");
+                String nick = strMessage[1];
+                strMessage[0] = "";
+                strMessage[1] = "";
+                StringBuilder stb = new StringBuilder();
+                for(String str: strMessage) {
+                    stb.append(str + " ");
+                }
+
+                server.sendPrivateMessage(stb.toString().trim(), this);
+            }
             String formattedMessage = String.format("Message from  %s: %s", name, message);
             System.out.println(formattedMessage);
             if (message.equals("-exit")) {

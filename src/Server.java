@@ -51,9 +51,9 @@ public class Server {
             }
             if(!isAuth) {
                 try {
-
+                    streamClose(socket);
                     socket.close();
-                    
+
                 } catch (IOException e) {
                     System.out.println("Client has been disconnected due to exceeded time for authorization");
                 }
@@ -62,10 +62,23 @@ public class Server {
             e.printStackTrace();
         }
     }
+    public void streamClose(Socket socket) {
+        for(ClientHandler ch: clientHandlers) {
+            if (ch.getSocket().equals(socket)) {
+                ch.setIn();
+                ch.setOut();
+            }
+        }
+    }
 
     public void broadcast(String incomingMessage) {
         for(ClientHandler ch : clientHandlers) {
             ch.sendMessage(incomingMessage);
+        }
+    }
+    public void sendPrivateMessage(String incomingMessage, ClientHandler clientHandler) {
+        for(ClientHandler ch : clientHandlers) {
+            if(ch.equals(clientHandler)) ch.sendMessage(incomingMessage);
         }
     }
 
