@@ -1,6 +1,10 @@
 import java.util.Iterator;
 
 public class DoubleLinkedList implements GeekBrainsList{
+    public DoubleLinkedList() {
+        iterator();
+    }
+
     private Node head;
 
 
@@ -43,14 +47,21 @@ public class DoubleLinkedList implements GeekBrainsList{
             return;
         }
 
-        if(current.getInfo().equals(o)) {
+        if(current.getInfo().equals(o) && current.getNext() != null) {
             previous.setNext(current.getNext());
             current.getNext().setPrev(previous);
             return;
         }
+        if(current.getInfo().equals(o) && current.getNext() == null) {
+            previous.setNext(null);
+            return;
+        }
 
-        remove(current, current.getNext(), o);
     }
+    public String getInfo() {
+       return this.head.getInfo();
+    }
+
     public Iterator<Node> iterator () {
         Iterator<Node> iterator = new Iterator<>() {
             private Node currentHead = head;
@@ -63,6 +74,7 @@ public class DoubleLinkedList implements GeekBrainsList{
                 }
                 else return null;
             }
+
 
             @Override
             public boolean hasNext() {

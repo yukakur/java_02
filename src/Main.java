@@ -10,8 +10,15 @@ public class Main {
 //        System.out.println(list);
         list.add("4");
         System.out.println(list);
-        list.remove("2");
+        list.remove("4");
         System.out.println(list);
+
+        for (int i = 0; i < 3; i++) {
+            System.out.println(list.getInfo());
+            list.iterator().next();
+
+        }
+
 
 
 
